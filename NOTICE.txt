@@ -1,0 +1,9 @@
+AnyRainyDay Single Image Editor
+
+This package includes code derived from AnyRainyDay by WuCheng-cn.
+Original project: https://github.com/WuCheng-cn/AnyRainyDay
+License: MIT
+
+This package also bundles Three.js through the production build.
+Three.js project: https://github.com/mrdoob/three.js
+License: MIT

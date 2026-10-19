@@ -1,0 +1,32 @@
+AnyRainyDay 单图雨效编辑器 Linux 版
+
+使用方法：
+1. 解压整个文件夹。
+2. 在这个文件夹中打开终端。
+3. 运行：
+
+   bash start-editor.sh
+
+4. 浏览器会自动打开编辑器页面。
+5. 选择一张 PNG、JPG 或 WEBP 图片，调整雨效参数。
+6. 点击“导出 PNG”保存处理后的图片。
+
+如果脚本没有自动打开浏览器，可以直接用 Chrome、Firefox 或 Edge 打开“直接打开编辑器.html”。
+
+停止方法：
+
+   bash stop-editor.sh
+
+默认直接打开“直接打开编辑器.html”时不需要停止服务，关掉浏览器页面即可。
+只有在备用本地服务模式下，才需要运行 stop-editor.sh。
+
+如果你的桌面环境允许直接运行脚本，也可以尝试双击 start-editor.sh。
+
+依赖说明：
+- 默认直接打开“直接打开编辑器.html”，不需要 Node.js、Python、Photoshop 或 FFmpeg。
+- 只有在没有 editor-standalone.html 的旧包或备用服务模式下，才需要 python3。
+
+隐私说明：
+- 图片只在本机浏览器里处理，不会上传网络。
+- 这个便携版只包含单张图片编辑器。
+- 批量图片处理和 MP4 生成不在此便携版内。

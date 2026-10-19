@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>AnyRainyDay 单图雨效编辑器</title>
+    <link rel="stylesheet" href="./editor/editor.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">//</span>
+          <div>
+            <h1>AnyRainyDay</h1>
+            <p id="fileMeta">单图雨效编辑器</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="button ghost" id="openImageButton" type="button">选择图片</button>
+          <button class="icon-button" id="importSettingsButton" type="button" title="导入设置" aria-label="导入设置">↥</button>
+          <button class="icon-button" id="exportSettingsButton" type="button" title="导出设置" aria-label="导出设置">↧</button>
+          <button class="button primary" id="exportPngButton" type="button" disabled>导出 PNG</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="preview-panel" aria-label="图片预览">
+          <div class="preview-toolbar">
+            <div class="segmented" id="viewMode" aria-label="预览模式">
+              <button class="active" type="button" data-view="effect">效果</button>
+              <button type="button" data-view="compare">对比</button>
+              <button type="button" data-view="original">原图</button>
+            </div>
+            <div class="playback">
+              <button class="icon-button" id="playButton" type="button" title="播放雨效" aria-label="播放雨效">▶</button>
+              <button class="button compact" id="randomizeButton" type="button" title="切换到另一组雨滴形态">换一组雨形</button>
+            </div>
+          </div>
+
+          <div class="stage-area" id="dropTarget">
+            <button class="empty-state" id="emptyState" type="button">
+              <span class="empty-icon" aria-hidden="true">＋</span>
+              <strong>打开一张照片</strong>
+              <small>PNG / JPG / WEBP</small>
+            </button>
+
+            <div class="render-surface hidden" id="renderSurface">
+              <img id="originalImage" alt="原图预览">
+              <div class="compare-line" id="compareLine" aria-hidden="true"></div>
+              <input class="compare-slider" id="compareSlider" type="range" min="0" max="100" value="50" aria-label="原图与效果对比位置">
+            </div>
+          </div>
+
+          <div class="statusbar">
+            <span id="statusText">等待载入图片</span>
+            <span id="renderMeta">原始分辨率导出</span>
+          </div>
+        </section>
+
+        <aside class="inspector" aria-label="雨效参数">
+          <section class="control-section presets-section">
+            <div class="section-heading">
+              <h2>效果预设</h2>
+              <button class="text-button" id="resetButton" type="button">重置</button>
+            </div>
+            <div class="preset-grid" id="presetGrid">
+              <button type="button" data-preset="light">轻雨</button>
+              <button class="active" type="button" data-preset="natural">自然</button>
+              <button type="button" data-preset="heavy">强雨</button>
+            </div>
+          </section>
+
+          <section class="control-section">
+            <h2>雨丝形态</h2>
+            <label class="range-control">
+              <span><b>雨量</b><output data-output="intensity">42%</output></span>
+              <input type="range" data-key="intensity" min="0" max="1" step="0.01" value="0.42">
+            </label>
+            <label class="range-control">
+              <span><b>下落速度</b><output data-output="speed">0.45</output></span>
+              <input type="range" data-key="speed" min="0" max="3" step="0.01" value="0.45">
+            </label>
+            <label class="range-control">
+              <span><b>折射强度</b><output data-output="normal">0.70</output></span>
+              <input type="range" data-key="normal" min="0" max="3" step="0.01" value="0.7">
+            </label>
+            <label class="range-control">
+              <span><b>雨纹尺度</b><output data-output="zoom">1.00</output></span>
+              <input type="range" data-key="zoom" min="0.35" max="2.5" step="0.01" value="1">
+            </label>
+            <label class="range-control">
+              <span><b>雨形时间</b><output data-output="time">8.0 s</output></span>
+              <input type="range" data-key="time" min="0" max="80" step="0.1" value="8">
+            </label>
+          </section>
+
+          <section class="control-section">
+            <h2>融合与清晰度</h2>
+            <label class="range-control">
+              <span><b>效果强度</b><output data-output="effectMix">72%</output></span>
+              <input type="range" data-key="effectMix" min="0" max="1" step="0.01" value="0.72">
+            </label>
+            <label class="range-control protection-control">
+              <span><b>背景保护</b><output data-output="backgroundProtection">100%</output></span>
+              <input type="range" data-key="backgroundProtection" min="0" max="1" step="0.01" value="1">
+            </label>
+            <label class="range-control">
+              <span><b>雨滴模糊</b><output data-output="blurIntensity">0.35</output></span>
+              <input type="range" data-key="blurIntensity" min="0" max="5" step="0.05" value="0.35">
+            </label>
+            <label class="range-control">
+              <span><b>模糊采样</b><output data-output="blurIterations">10</output></span>
+              <input type="range" data-key="blurIterations" min="1" max="32" step="1" value="10">
+            </label>
+            <label class="range-control">
+              <span><b>雨滴亮度</b><output data-output="brightness">96%</output></span>
+              <input type="range" data-key="brightness" min="0.4" max="1.4" step="0.01" value="0.96">
+            </label>
+          </section>
+
+          <section class="control-section switches-section">
+            <h2>渲染选项</h2>
+            <label class="switch-row">
+              <span><b>冷色后处理</b><small>仅作用于雨滴区域</small></span>
+              <input type="checkbox" data-key="postProcessing" checked>
+            </label>
+            <label class="switch-row">
+              <span><b>镜头缓慢平移</b><small>适合动态预览</small></span>
+              <input type="checkbox" data-key="panning">
+            </label>
+            <label class="switch-row">
+              <span><b>闪电</b><small>随机短时提亮</small></span>
+              <input type="checkbox" data-key="lightning">
+            </label>
+            <label class="switch-row">
+              <span><b>填充画面</b><small>保持输入图像比例</small></span>
+              <input type="checkbox" data-key="textureFill" checked>
+            </label>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+    <input id="settingsInput" type="file" accept="application/json,.json" hidden>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./editor/editor.ts"></script>
+  </body>
+</html>
